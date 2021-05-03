@@ -1,6 +1,6 @@
 
 
-class Perceptron:
+class Neuron:
 
     def __init__(self, alpha, W):
         self.alpha = alpha
@@ -29,18 +29,16 @@ class Perceptron:
         # print([y, h_wx])
         if y == 1 and h_wx == 0:
             self.W[0] = self.W[0] + self.alpha
-            
             for i in range(4):
                 self.W[i + 1] = self.W[i + 1] + self.alpha * X[i]
 
-            print("y: 1 h_wx: 0 new W = " + str(self.W))
-        elif y == 0 and h_wx == 1:
-            self.W[0] = self.W[0] - self.alpha
+            # print("y: 1 h_wx: 0 new W = " + str(self.W))
 
+        if y == 0 and h_wx == 1:
+            self.W[0] = self.W[0] - self.alpha
             for i in range(4):
                 self.W[i + 1] = self.W[i + 1] - self.alpha * X[i]
 
-            print("y: 0 h_wx: 1 new W = " + str(self.W))
-        else:
-            print("The answer is correct, no need to adjust W") 
+            # print("y: 0 h_wx: 1 new W = " + str(self.W))
+
 
