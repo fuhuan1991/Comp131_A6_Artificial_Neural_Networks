@@ -18,16 +18,17 @@ class OutputLayerNeuron(Neuron):
     # h_wx: actual output 
     def train(self, X, y, h_wx):
         errorValue = self.getErrorValue(X, y, h_wx)
-        print("old W = " + str(self.W))
+        length = len(X)
+        # print("old W = " + str(self.W))
         self.W[0] = self.W[0] + self.alpha * errorValue
-        for i in range(4):
+        for i in range(length):
             self.W[i + 1] = self.W[i + 1] + self.alpha * errorValue * X[i]
 
-        print("X = " + str(X))
-        print("y = " + str(y) + " h_wx = " + str(h_wx))
-        print(errorValue)
-        print("new W = " + str(self.W))
-        print("      ")
+        # print("X = " + str(X))
+        # print("y = " + str(y) + " h_wx = " + str(h_wx))
+        # print(errorValue)
+        # print("new W = " + str(self.W))
+        # print("      ")
         return self.W
 
 

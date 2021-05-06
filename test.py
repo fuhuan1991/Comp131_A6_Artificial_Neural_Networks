@@ -18,18 +18,18 @@ W = [0, 0.1, 0.1, 0.1, 0.1] # Initial weight
 for i in range(3):
     for j in range(50):
         line = f.readline()
-        X = []
+        dataPoint = []
         arr = line.split(',')
-        X.append(float(arr[0]))
-        X.append(float(arr[1]))
-        X.append(float(arr[2]))
-        X.append(float(arr[3]))
-        X.append(arr[4][:-1])
+        dataPoint.append(float(arr[0]))
+        dataPoint.append(float(arr[1]))
+        dataPoint.append(float(arr[2]))
+        dataPoint.append(float(arr[3]))
+        dataPoint.append(arr[4][:-1])
         # A portion of data would be used for testing whild others would be used for training
         if j < testDataAmount:
-            testData.append(X)
+            testData.append(dataPoint)
         else:
-            trainData.append(X)
+            trainData.append(dataPoint)
 
 f.close()
 
@@ -55,11 +55,12 @@ n4 = HiddenLayerNeuron(alpha, W)
 ############################# Train the ANN
 
 for dataPoint in trainData:
+    X = [dataPoint[0], dataPoint[1], dataPoint[2], dataPoint[3]]
     # generate output
-    a_1 = n1.run(dataPoint)
-    a_2 = n2.run(dataPoint)
-    a_3 = n3.run(dataPoint)
-    a_4 = n4.run(dataPoint)
+    a_1 = n1.run(X)
+    a_2 = n2.run(X)
+    a_3 = n3.run(X)
+    a_4 = n4.run(X)
     hiddenLayerOutput = [a_1, a_2, a_3, a_4]
     output_1 = o1.run(hiddenLayerOutput) # Iris-setosa
     output_2 = o2.run(hiddenLayerOutput) # Iris-versicolor
@@ -93,10 +94,21 @@ for dataPoint in trainData:
     err_03 = o3.getErrorValue(hiddenLayerOutput, desiredOutput[2], output_3)
     Err = [err_01, err_02, err_03]
     # print(Err)
-    n1.train(dataPoint, Err, W_n1)
-    n2.train(dataPoint, Err, W_n2)
-    n3.train(dataPoint, Err, W_n3)
-    n4.train(dataPoint, Err, W_n4)
+    n1.train(X, Err, W_n1)
+    n2.train(X, Err, W_n2)
+    n3.train(X, Err, W_n3)
+    n4.train(X, Err, W_n4)
+
+    # print(n1.W)
+    # print(n2.W)
+    # print(n3.W)
+    # print(n4.W)
+
+    # print(o1.W)
+    # print(o2.W)
+    # print(o3.W)
+
+    # print("--------")
     
 
 ############################# Test the ANN
@@ -104,6 +116,7 @@ for dataPoint in trainData:
 correctCounter = 0
 totalTestCounter = testDataAmount * 3
 for dataPoint in testData:
+    X = [dataPoint[0], dataPoint[1], dataPoint[2], dataPoint[3]]
     desiredOutput = []
 
     if (dataPoint[4] == "Iris-setosa"): 
@@ -113,17 +126,17 @@ for dataPoint in testData:
     if (dataPoint[4] == "Iris-virginica"): 
         desiredOutput = [0, 0, 1]
     
-    a_1 = n1.run(dataPoint)
-    a_2 = n2.run(dataPoint)
-    a_3 = n3.run(dataPoint)
-    a_4 = n4.run(dataPoint)
+    a_1 = n1.run(X)
+    a_2 = n2.run(X)
+    a_3 = n3.run(X)
+    a_4 = n4.run(X)
     hiddenLayerOutput = [a_1, a_2, a_3, a_4]
     output_1 = o1.run(hiddenLayerOutput) # Iris-setosa
     output_2 = o2.run(hiddenLayerOutput) # Iris-versicolor
     output_3 = o3.run(hiddenLayerOutput) # Iris-virginica
 
     actualOutput = [output_1, output_2, output_3]
-    # print("desiredOutput: " + str(desiredOutput) + " actualOutput: " + str(actualOutput))
+    print("desiredOutput: " + str(desiredOutput) + " actualOutput: " + str(actualOutput))
     for i in range(3):
         if actualOutput[i] > 0.5:
             actualOutput[i] = 1
