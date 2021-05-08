@@ -25,8 +25,13 @@ class Neuron:
 
     def run(self, X):
         potential = self.getPotential(X)
+        print(potential)
         return self.activationFunction(potential)
 
     
 
+n = Neuron(0.1, [1,1,1,1,1])
+X = [2,3,1,2]
+r = n.run(X)
+print(r)
 

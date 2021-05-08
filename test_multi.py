@@ -1,15 +1,16 @@
 from OutputLayerNeuron import OutputLayerNeuron
 from HiddenLayerNeuron import HiddenLayerNeuron
 import random
-
+from util import getRandomWeight
+# In this file, the ANN has a single-layer structure
 ############################# Setup constants
-
+print("---In this file, the ANN has a single-layer structure---")
 f = open("ANN - Iris data.txt", "r")
 trainData = [] # data for training
 testData = [] # data for testing
 len = 150
 testDataAmount = 10  # The number of data points for testing in each type of iris, no more than 50
-alpha = 0.2 # learning rate
+alpha = 0.4 # learning rate
 W = [0, 0.1, 0.1, 0.1, 0.1] # Initial weight
 
 ############################# Prepare data
@@ -41,26 +42,29 @@ random.shuffle(trainData)
 ############################# Build the ANN
 
 # Generate 3 neurons for the output layer, each for a type of iris
-o1 = OutputLayerNeuron(alpha, W) # Iris-setosa
-o2 = OutputLayerNeuron(alpha, W) # Iris-versicolor
-o3 = OutputLayerNeuron(alpha, W) # Iris-virginica
+o1 = OutputLayerNeuron(alpha, getRandomWeight(W)) # Iris-setosa
+o2 = OutputLayerNeuron(alpha, getRandomWeight(W)) # Iris-versicolor
+o3 = OutputLayerNeuron(alpha, getRandomWeight(W)) # Iris-virginica
 
 # Generate 4 neurons for the hidden layer
 # In this case, only one hidden layer
-n1 = HiddenLayerNeuron(alpha, W)
-n2 = HiddenLayerNeuron(alpha, W)
-n3 = HiddenLayerNeuron(alpha, W)
-n4 = HiddenLayerNeuron(alpha, W)
+n1 = HiddenLayerNeuron(alpha, getRandomWeight(W))
+n2 = HiddenLayerNeuron(alpha, getRandomWeight(W))
+n3 = HiddenLayerNeuron(alpha, getRandomWeight(W))
+n4 = HiddenLayerNeuron(alpha, getRandomWeight(W))
+
 
 ############################# Train the ANN
 
 for dataPoint in trainData:
     X = [dataPoint[0], dataPoint[1], dataPoint[2], dataPoint[3]]
+
     # generate output
     a_1 = n1.run(X)
     a_2 = n2.run(X)
     a_3 = n3.run(X)
     a_4 = n4.run(X)
+
     hiddenLayerOutput = [a_1, a_2, a_3, a_4]
     output_1 = o1.run(hiddenLayerOutput) # Iris-setosa
     output_2 = o2.run(hiddenLayerOutput) # Iris-versicolor
@@ -85,10 +89,11 @@ for dataPoint in trainData:
     # print([output_1, output_2, output_3])
 
     # train hidden layer neurons
-    W_n1 = [W1[0], W2[0], W3[0]]
-    W_n2 = [W1[1], W2[1], W3[1]]
-    W_n3 = [W1[2], W2[2], W3[2]]
-    W_n4 = [W1[3], W2[3], W3[3]]
+    W_n1 = [W1[1], W2[1], W3[1]]
+    W_n2 = [W1[2], W2[2], W3[2]]
+    W_n3 = [W1[3], W2[3], W3[3]]
+    W_n4 = [W1[4], W2[4], W3[4]]
+
     err_01 = o1.getErrorValue(hiddenLayerOutput, desiredOutput[0], output_1) 
     err_02 = o2.getErrorValue(hiddenLayerOutput, desiredOutput[1], output_2) 
     err_03 = o3.getErrorValue(hiddenLayerOutput, desiredOutput[2], output_3)
@@ -97,12 +102,11 @@ for dataPoint in trainData:
     n1.train(X, Err, W_n1)
     n2.train(X, Err, W_n2)
     n3.train(X, Err, W_n3)
-    n4.train(X, Err, W_n4)
+
 
     # print(n1.W)
     # print(n2.W)
     # print(n3.W)
-    # print(n4.W)
 
     # print(o1.W)
     # print(o2.W)
@@ -116,7 +120,9 @@ for dataPoint in trainData:
 correctCounter = 0
 totalTestCounter = testDataAmount * 3
 for dataPoint in testData:
+
     X = [dataPoint[0], dataPoint[1], dataPoint[2], dataPoint[3]]
+
     desiredOutput = []
 
     if (dataPoint[4] == "Iris-setosa"): 
@@ -126,10 +132,12 @@ for dataPoint in testData:
     if (dataPoint[4] == "Iris-virginica"): 
         desiredOutput = [0, 0, 1]
     
+    # generate output
     a_1 = n1.run(X)
     a_2 = n2.run(X)
     a_3 = n3.run(X)
     a_4 = n4.run(X)
+
     hiddenLayerOutput = [a_1, a_2, a_3, a_4]
     output_1 = o1.run(hiddenLayerOutput) # Iris-setosa
     output_2 = o2.run(hiddenLayerOutput) # Iris-versicolor
