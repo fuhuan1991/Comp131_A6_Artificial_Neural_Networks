@@ -37,7 +37,6 @@ f.close()
 
 # shuffle the data points.
 random.shuffle(trainData)
-# random.shuffle(testData)
 
 
 ############################# Build the ANN
@@ -76,7 +75,7 @@ for dataPoint in trainData:
     W1 = []
     W2 = []
     W3 = []
-    
+
     # generate disired output
     if (dataPoint[4] == "Iris-setosa"): 
         desiredOutput = [1, 0, 0]
