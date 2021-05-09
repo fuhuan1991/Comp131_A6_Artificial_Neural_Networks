@@ -1,6 +1,5 @@
 import random
 
-
 def getRandomWeight(W):
     weights = W.copy()
     length = len(W)
@@ -8,4 +7,3 @@ def getRandomWeight(W):
         weights[i] += (random.random() - 0.5) / 5
     return weights
 
-W = [0, 0, 0, 0, 0]

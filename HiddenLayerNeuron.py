@@ -21,16 +21,9 @@ class HiddenLayerNeuron(Neuron):
     # Err_j: errorValues of next layer, an array
     # W_ij: an array of weights between this neuron and the neurons in the next layer
     def train(self, X, Err_j, W_ij):
-        # print("old W = " + str(self.W))
         errorValue = self.getErrorValue(X, Err_j, W_ij)
         length = len(X)
         self.W[0] = self.W[0] + self.alpha * errorValue
         for i in range(length):
             self.W[i + 1] = self.W[i + 1] + self.alpha * errorValue * X[i]
-        
-        # print("X = " + str(X))
-        # print(errorValue)
-        # print("new W = " + str(self.W))
-        # print("      ")
         return self.W
-
